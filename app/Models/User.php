@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\profil;
 
 class User extends Authenticatable
 {
@@ -49,5 +51,45 @@ class User extends Authenticatable
     public function roles()
     {
         return RoleController::getRole($this);
+    }
+
+    public function profil()
+    {
+        return $this->hasOne(profil::class);
+    }
+
+    public function reseaux()
+    {
+        return $this->hasMany(reseau::class);
+    }
+
+    public function theme_de_recherche()
+    {
+        return $this->hasOne(theme_de_recherches::class);
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(grade::class);
+    }
+
+    public function distinctions()
+    {
+        return $this->hasMany(distinctions::class);
+    }
+
+    public function ues()
+    {
+        return $this->hasMany(ue::class);
+    }
+
+    public function projets_recherche()
+    {
+        return $this->hasMany(projets_recherche::class);
+    }
+
+    public function publications()
+    {
+        return $this->hasMany(publications::class);
     }
 }

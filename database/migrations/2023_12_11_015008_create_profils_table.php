@@ -17,9 +17,13 @@ return new class extends Migration
             $table->string('titre');
             $table->string('nom');
             $table->string('prenom');
+            $table->string('date_de_naissance');
+            $table->string('filiere')->nullable();
             $table->string('photo')->nullable();
-            $table->string('specialite');
+            $table->string('specialite')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfController;
 use Illuminate\Support\Facades\Route;
-
+use PHPUnit\Event\TestRunner\GarbageCollectionTriggered;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,12 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('admin/dashboard/welcome');
-});
-Route::get('/edit', function () {
-    return view('edition-profil');
-});
+Route::get('/dashboard', [ProfController::class, 'edit'])->name("admin");
+Route::get('/profil', function () {
+})->middleware('auth');
 
 Route::get('/dashboard/ajouter-etudiants', [AdminController::class, 'createEtudiants'])->name("admin.ajoutetudiants");
 Route::get('/dashboard/ajouter-professeurs', [AdminController::class, 'createprofesseurs'])->name("admin.ajoutprofesseurs");

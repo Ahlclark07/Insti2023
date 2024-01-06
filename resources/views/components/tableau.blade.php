@@ -21,35 +21,23 @@
             <table class="w-full my-0 align-middle text-dark border-neutral-200">
               <thead class="align-bottom">
                 <tr class="font-semibold text-[0.95rem] text-secondary-dark">
-                  <th class="pb-3 uppercase text-start min-w-[175px]">étudiant</th>
-                  <th class="pb-3 uppercase text-end min-w-[100px]">filière</th>
-                  <th class="pb-3 uppercase text-end min-w-[100px]">année d'étude</th>
-                  <th class="pb-3 uppercase pr-12 text-end min-w-[175px]">Actions</th>
+                    @if (request()->is('ajouter-etudiant'))
+                    <th class="pb-3 uppercase text-start min-w-[175px]">étudiant</th>
+                    <th class="pb-3 uppercase text-end min-w-[100px]">filière</th>
+                    <th class="pb-3 uppercase text-end min-w-[100px]">année d'étude</th>
+                    <th class="pb-3 uppercase pr-12 text-end min-w-[175px]">Actions</th>
+                    @else
+                    <th class="pb-3 uppercase text-start min-w-[175px]">Professeur</th>
+                    <th class="pb-3 uppercase text-end min-w-[100px]">Grade</th>
+                    <th class="pb-3 uppercase text-end min-w-[100px]">Spécia</th>
+                    <th class="pb-3 uppercase pr-12 text-end min-w-[175px]">Actions</th>
+
+                    @endif
                 </tr>
               </thead>
               <tbody>
-                <tr class="border-b border-dashed last:border-b-0">
-                  <td class="p-3 pl-0">
-                    <div class="flex items-center">
-                      <div class="relative inline-block shrink-0 rounded-2xl me-3">
-                        <img src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/riva-dashboard-tailwind/img/img-49-new.jpg" class="w-[50px] h-[50px] inline-block shrink-0 rounded-2xl" alt="">
-                      </div>
-                      <div class="flex flex-col justify-start">
-                        <a href="javascript:void(0)" class="mb-1 font-semibold transition-colors duration-200 ease-in-out text-lg/normal text-secondary-inverse hover:text-primary">Ahmal Bilal SEIDOU </a>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="p-3 pr-0 text-end">
-                    <span class="font-semibold text-light-inverse text-md/normal">GEI - IT</span>
-                  </td>
-                  <td class="p-3 pr-0 text-end">
-                    <span class="text-center uppercase align-baseline inline-flex px-2 py-1 mr-auto items-center font-semibold text-base/none text-success bg-success-light rounded-lg">
-                     3e année
-                  </td>
-                  <td class="p-3 pr-12 text-end">
-                    <a href="#" class="bg-red-400 p-3 text-white rounded-xl">Supprimer</a>
-                  </td>
-                </tr>
+                @yield("Liste")
+
               </tbody>
             </table>
           </div>

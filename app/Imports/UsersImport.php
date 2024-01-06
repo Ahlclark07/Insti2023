@@ -16,26 +16,30 @@ class UsersImport implements ToModel
     {
         $this->id_role = $id_role;
     }
-    /** 
+    /**
      * @param array $row
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function model(array $row)
     {
-        // dd($row[0]);
 
 
 
-        $user = new User([
-            'name' => $row[0],
-            'email' => $row[1],
-            'password' => Hash::make($row[1])
-        ]);
+        $nom = $row[0];
+        $email = $row[1];
+        if ($nom && $email) {
 
-        $user->save();
+            $user = User::create([
+                'name' => $nom,
+                'email' => $email,
+                'password' => Hash::make($email)
+            ]);
+
+            RoleController::setRole($user, [$this->id_role]);
+        }
 
 
-        return RoleController::setRole($user, [$this->id_role]);
+        return null;
     }
 }

@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('reseau_ids');
             $table->string('liens');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('reseau_id')->references('id')->on('reseaus')->onDelete('cascade');
         });
     }
 

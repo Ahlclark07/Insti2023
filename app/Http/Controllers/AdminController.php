@@ -26,7 +26,10 @@ class AdminController extends Controller
     public function createEtudiant()
     {
 
-        return view('admin/dashboard/ajouter-etudiant')->with('id', $this->getRoleIdOf("etudiant"));
+        $etudiantsIds = DB::table("user_data_type")->where("data_type_id", $this->getRoleIdOf("etudiant"))->pluck("user_id");
+        $etudiants = User::whereIn("id", $etudiantsIds)->paginate(5);
+
+        return view('admin/dashboard/ajouter-etudiant')->with('id', $this->getRoleIdOf("etudiant"))->with('etudiants', $etudiants);
         //
     }
     public function createEtudiants()
@@ -37,7 +40,10 @@ class AdminController extends Controller
     }
     public function createProfesseur()
     {
-        return view('admin/dashboard/ajouter-professeur')->with('id', $this->getRoleIdOf("enseignant"));
+        $professeursIds = DB::table("user_data_type")->where("data_type_id", $this->getRoleIdOf("enseignant"))->pluck("user_id");
+        $professeurs = User::whereIn("id", $professeursIds)->paginate(5);
+
+        return view('admin/dashboard/ajouter-professeur')->with('id', $this->getRoleIdOf("enseignant"))->with("professeurs", $professeurs);
         //
     }
     public function createProfesseurs()
@@ -63,7 +69,7 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
         ]);
         RoleController::setRole($user, [$request->type]);
-        return view($request->type == $this->getRoleIdOf("etudiant") ? 'admin.dashboard.ajouter-etudiant' : 'admin.dashboard.ajouter-professeur')
+        return redirect()->route($request->type == $this->getRoleIdOf("etudiant") ? 'admin.ajoutetudiant' : 'admin.ajoutetudiant')
             ->with('message', "Compte de " . $request->name . " créé(e) avec succès")->with("id", $request->type);
     }
 

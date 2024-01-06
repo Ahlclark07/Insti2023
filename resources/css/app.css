@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.profil-form {
+    width: 50%;
+}
+.profil-input:focus {
+    outline: none !important;
+    border: 0px;
+}
+.profil-input {
+    padding: 0px 10px;
+}
+.profil-select {
+    width: 100% !important;
+}
+.space_beetween {
+    justify-content: space-between !important;
+}
+.div_espace_disponible {
+    width: 100% !important;
+}
+.masquer_vu {
+    display: none;
+}
+.all-screen {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row !important;
+}
