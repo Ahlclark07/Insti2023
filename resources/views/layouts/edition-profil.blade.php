@@ -32,7 +32,7 @@
 
           <div id="profile" class="space-y-3">
             <img
-              src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+              src="{{asset('storage/usersImages/'. (auth()->user()->profil?->photo ?? 'userProfile.png'))}}"
               alt="Avatar user"
               class="w-10 md:w-16 rounded-full mx-auto"
             />
@@ -42,7 +42,7 @@
               >
                 {{auth()->user()->name}}
               </h2>
-              <p class="text-xs text-gray-500 text-center">{{auth()->user()->roles()}}</p>
+              <p class="text-xs text-gray-500 text-center">{{auth()->user()->email}}</p>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="bg-teal-500 active:bg-teal-600 uppercase m-2 text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
@@ -194,9 +194,9 @@
           </div>
         </div>
       </div>
-      <div class="div_espace_disponible">
-
-        <form action="" method="post" class="flex justify-center mt-10 mb-10" >
+      <div class="w-full overflow-scroll">
+        <form action={{route('update.profil')}} method="post" class="flex justify-center mt-10 mb-10" enctype="multipart/form-data">
+            @csrf
             <div>
                 <h2 class="text-3xl font-bold text-center">Modifier mon profil</h2>
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-8">
@@ -205,60 +205,111 @@
                     <div class="sm:col-span-8">
                       <label for="nom" class="block text-sm font-medium leading-6 text-gray-900">Nom</label>
                       <div class="mt-2">
-                        <input id="nom" name="nom"  autocomplete="nom" value={{auth()->user()->name}} class="profil-input block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <input required id="nom" name="nom"  autocomplete="nom" value="{{auth()->user()->profil?->nom ?? auth()->user()->name}}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                       </div>
+                      @error('nom')
+                            <span class="text-red-700">{{ $message }}</span>
+                      @enderror
                     </div>
                     <div class="sm:col-span-8">
                         <label for="prenoms" class="block text-sm font-medium leading-6 text-gray-900">Prénoms</label>
                         <div class="mt-2">
-                          <input id="prenoms" value={{auth()->user()->name}} name="prenoms" autocomplete="prenoms" class="profil-input block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                          <input required id="prenoms" value="{{auth()->user()->profil?->prenom ?? auth()->user()->name}}" name="prenoms" autocomplete="prenoms" class=" block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         </div>
+                    @error('prenoms')
+                        <span class="text-red-700">{{ $message }}</span>
+                    @enderror
                     </div>
+                    <div class="sm:col-span-8">
+                        <label for="grade" class="block text-sm font-medium leading-6 text-gray-900">Grade</label>
+                        @if (auth()->user()->roles()->contains('enseignant') && $grades)
+                            <div class="mt-2 w-full">
+                                <select required id="grade" name="grade" autocomplete="grade" class="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    @foreach ($grades as $grade)
+                                        <option value="{{$grade->id}}" @selected(auth()->user()->grade?->last()->grade == $grade->grade)>{{$grade->grade}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @error('grade')
+                            <span class="text-red-700">{{ $message }}</span>
+                        @enderror
+                        </div>
+                    @endif
 
-                    <div class="sm:col-span-4 ">
+
+                    <div @class(['sm:col-span-4', 'hidden' => !auth()->user()->roles()->contains('enseignant')])>
                         <label for="specialite" class="block text-sm font-medium leading-6 text-gray-900">Spécialité</label>
                         <div class="mt-2">
-                          <input id="specialite" name="specialite" value="Ancienne spécialité" autocomplete="specialite" class="profil-select block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                          <input required id="specialite" name="specialite" value="{{auth()->user()->profil?->specialite}}" autocomplete="specialite" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                         </div>
+                    @error('specialite')
+                        <span class="text-red-700">{{ $message }}</span>
+                    @enderror
                     </div>
 
-                    <div class="sm:col-span-4 masquer_vu">
+                    <div @class(['sm:col-span-4', 'hidden' => !auth()->user()->roles()->contains('etudiant')])>
                         <label for="filiere" class="block text-sm font-medium leading-6 text-gray-900">Filière</label>
                         <div class="mt-2">
-                          <select id="filiere" name="filiere" autocomplete="filiere" class="profil-select block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                            <option >GEI</option>
-                            <option>ER</option>
-                            <option selected>MS</option>
-                            <option>GMP</option>
-                            <option>GC</option>
+                          <select required id="filiere" name="filiere" autocomplete="filiere" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                            <option @selected(auth()->user()->profil?->filiere =="GEI")>GEI</option>
+                            <option @selected(auth()->user()->profil?->filiere =="GE")>GE</option>
+                            <option @selected(auth()->user()->profil?->filiere =="MS")>MS</option>
+                            <option @selected(auth()->user()->profil?->filiere ==="GMP")>GMP</option>
+                            <option @selected(auth()->user()->profil?->filiere =="GC")>GC</option>
                           </select>
                         </div>
+                        @error('filiere')
+                            <span class="text-red-700">{{ $message }}</span>
+                        @enderror
+                        @error('date_de_naissance')
+                            <span class="text-red-700">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="sm:col-span-4">
                         <label for="date" class="block text-sm font-medium leading-6 text-gray-900">Date de naissance</label>
                         <div class="mt-2">
-                          <input id="date"   name="date" type="date" autocomplete="date" class="profil-input block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <input required value="{{auth()->user()->profil?->date_de_naissance}}" id="date" name="date_de_naissance" type="date" autocomplete="date" class=" block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                         </div>
                     </div>
                     <div class="sm:col-span-8">
                         <label for="photo" class="block text-sm font-medium leading-6 text-gray-900">Photo</label>
                         <div class="mt-2 flex items-center gap-x-3">
                           <img
-                          src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+                          src="{{asset('storage/usersImages/'. (auth()->user()->profil?->photo ?? 'userProfile.png'))}}"
                           alt="Avatar user"
-                          class="w-10 md:w-16 rounded-full mx-auto"
+                          class="previewImage h-10 w-10 md:w-16 md:h-16 rounded-full mx-auto"
                           />
-                          <input type="file" class="profil-input rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                          <label for="profil-image-input" class="cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Changer photo de profil</label>
+                          <input id="profil-image-input" type="file" name="photo_de_profil" class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                         </div>
+                        @error('photo_de_profil')
+                            <span class="text-red-700">{{ $message }}</span>
+                        @enderror
                     </div>
             </div>
+            <script>
+                const fileInput = document.getElementById('profil-image-input');
+                const previewImage = document.querySelector('.previewImage');
+                var lastSrc = previewImage.src;
+
+                fileInput.addEventListener('change', function() {
+                    var file = fileInput.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            previewImage.src = e.target.result;
+                        };
+
+                        reader.readAsDataURL(file);
+                    }
+                });
+            </script>
 
             <div class="mt-6 flex items-center justify-center gap-x-6 ">
-                <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 div_espace_disponible">Modifier mon profil</button>
+                <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-full">Modifier mon profil</button>
             </div>
         </form>
-
-
       </div>
     </div>
 </main>

@@ -15,7 +15,9 @@ class profil extends Model
         'nom',
         'prenom',
         'photo',
-        'specialite'
+        'filiere',
+        'specialite',
+        'date_de_naissance'
     ];
 
     public function user()

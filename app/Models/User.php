@@ -68,9 +68,9 @@ class User extends Authenticatable
         return $this->hasOne(theme_de_recherches::class);
     }
 
-    public function grades()
+    public function grade()
     {
-        return $this->hasMany(grade::class);
+        return $this->belongsToMany(grade::class, 'user_grades');
     }
 
     public function distinctions()

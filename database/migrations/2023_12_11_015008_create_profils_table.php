@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('profils', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
-            $table->string('titre');
+            $table->unsignedBigInteger('user_id');
+            $table->string('titre')->nullable();
             $table->string('nom');
             $table->string('prenom');
-            $table->string('date_de_naissance');
+            $table->date('date_de_naissance');
             $table->string('filiere')->nullable();
             $table->string('photo')->nullable();
             $table->string('specialite')->nullable();
