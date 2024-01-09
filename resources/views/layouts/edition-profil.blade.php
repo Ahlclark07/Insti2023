@@ -1,4 +1,14 @@
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>Profil</title>
+</head>
+<body>
+
 <main class="profile-page">
   <div
       id="view"
@@ -307,9 +317,19 @@
             </script>
 
             <div class="mt-6 flex items-center justify-center gap-x-6 ">
-                <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-full">Modifier mon profil</button>
+                {{-- <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-full">Modifier mon profil</button> --}}
+                <input type="submit" onclick="fix()" value="Modifier" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-full">
             </div>
         </form>
       </div>
     </div>
 </main>
+
+<script>
+    function fix(){
+        document.querySelector('form.flex').submit();
+    }
+</script>
+
+</body>
+</html>
