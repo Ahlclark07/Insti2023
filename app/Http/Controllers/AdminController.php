@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use App\models\User;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -26,29 +26,29 @@ class AdminController extends Controller
     public function createEtudiant()
     {
 
-        $etudiantsIds = DB::table("user_data_type")->where("data_type_id", $this->getRoleIdOf("etudiant"))->pluck("user_id");
+        $etudiantsIds = DB::table("user_data_type")->where("data_type_id", AdminController::getRoleIdOf("etudiant"))->pluck("user_id");
         $etudiants = User::whereIn("id", $etudiantsIds)->paginate(5);
 
-        return view('admin/dashboard/ajouter-etudiant')->with('id', $this->getRoleIdOf("etudiant"))->with('etudiants', $etudiants);
+        return view('admin/dashboard/ajouter-etudiant')->with('id', AdminController::getRoleIdOf("etudiant"))->with('etudiants', $etudiants);
         //
     }
     public function createEtudiants()
     {
 
-        return view('admin/dashboard/ajouter-etudiants')->with('id', $this->getRoleIdOf("etudiant"));
+        return view('admin/dashboard/ajouter-etudiants')->with('id', AdminController::getRoleIdOf("etudiant"));
         //
     }
     public function createProfesseur()
     {
-        $professeursIds = DB::table("user_data_type")->where("data_type_id", $this->getRoleIdOf("enseignant"))->pluck("user_id");
+        $professeursIds = DB::table("user_data_type")->where("data_type_id", AdminController::getRoleIdOf("enseignant"))->pluck("user_id");
         $professeurs = User::whereIn("id", $professeursIds)->paginate(5);
 
-        return view('admin/dashboard/ajouter-professeur')->with('id', $this->getRoleIdOf("enseignant"))->with("professeurs", $professeurs);
+        return view('admin/dashboard/ajouter-professeur')->with('id', AdminController::getRoleIdOf("enseignant"))->with("professeurs", $professeurs);
         //
     }
     public function createProfesseurs()
     {
-        return view('admin/dashboard/ajouter-professeurs')->with('id', $this->getRoleIdOf("enseignant"));
+        return view('admin/dashboard/ajouter-professeurs')->with('id', AdminController::getRoleIdOf("enseignant"));
         //
     }
 
@@ -69,11 +69,11 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
         ]);
         RoleController::setRole($user, [$request->type]);
-        return redirect()->route($request->type == $this->getRoleIdOf("etudiant") ? 'admin.ajoutetudiant' : 'admin.ajoutetudiant')
+        return redirect()->route($request->type == AdminController::getRoleIdOf("etudiant") ? 'admin.ajoutetudiant' : 'admin.ajoutetudiant')
             ->with('message', "Compte de " . $request->name . " créé(e) avec succès")->with("id", $request->type);
     }
 
-    private function getRoleIdOf($name)
+    public static function getRoleIdOf($name)
     {
         $id = DB::table("table_globals")->where("data_type", "user")->where("data_cat", $name)->pluck("id")->first();
         return $id;

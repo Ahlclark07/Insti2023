@@ -3,6 +3,7 @@
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Event\TestRunner\GarbageCollectionTriggered;
 /*
@@ -22,7 +23,11 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [AdminController::class, 'createEtudiant'])->name("admin");
 Route::get('/profil', [ProfilController::class, 'edit'])->middleware('auth');
+
 Route::post('/profil', [ProfilController::class, 'save'])->name('update.profil')->middleware('auth');
+
+Route::get('/professeurs', [PageController::class, 'getProfesseurs'])->name("frontend.professeurs");
+Route::get('/professeur/{id}', [PageController::class, 'getProfesseur'])->name("frontend.professeur");
 
 Route::get('/dashboard/ajouter-etudiants', [AdminController::class, 'createEtudiants'])->name("admin.ajoutetudiants");
 Route::get('/dashboard/ajouter-professeurs', [AdminController::class, 'createprofesseurs'])->name("admin.ajoutprofesseurs");
