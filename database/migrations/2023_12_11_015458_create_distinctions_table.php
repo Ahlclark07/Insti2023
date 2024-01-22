@@ -15,8 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string("annee");
             $table->string("nom_distinction");
+            $table->unsignedBigInteger("user_id");
             $table->string("institut");
             $table->string("lieu");
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
