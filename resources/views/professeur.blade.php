@@ -45,9 +45,6 @@
 
 
 
-
-
-
 <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
     <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
         <li class="me-2" role="presentation">
@@ -75,6 +72,13 @@
               <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white" style="color: blue;">
                 Distinctions
               </h3><br>
+                     @if(false && isset($professeur->distinctions) && count($professeur->distinctions) > 0)
+                    @foreach ($professeur->distinctions as $distinction )
+                    <li><span>-</span>{{$distinction}}</li>
+                    @endforeach
+                    @else
+                    <li>Aucune distinction enrégistrée pour le moment</li>
+                    @endif
                 <p> <span class="annee font-bold" style="color: blue">2020</span> : <span class="description">Prix PASSERESS de Meilleure Communication à la Société Ouest-Africaine de Chimie (SOACHIM).</span></p>
             </div>
             <br><br><br>
@@ -92,8 +96,13 @@
                   Thème de recherche :
                 </h3><br>
                   <ul>
-                     <li><span>-</span>Modélisation de l’Architecture Moléculaire et des Propriétés Optoélectroniques des Molécules OPV et OLED pour les Dispositifs Solaires Photovoltaïques.</li>
-                     <li><span>-</span>Empreintes Digitales Moléculaires des Composés Hélicéniques dans des matériaux à guides d’onde circulaire.</li>
+                    @if(false && isset($professeur->distinctions) && count($professeur->theme_de_recherche) > 0)
+                    @foreach ($professeur->theme_de_recherche as $theme )
+                    <li><span>-</span>{{$theme}}</li>
+                    @endforeach
+                    @else
+                    <li>Aucun thème de recherche enrégistré pour le moment</li>
+                    @endif
                   </ul>
               </div>
               <br>
