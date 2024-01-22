@@ -22,9 +22,22 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [AdminController::class, 'createEtudiant'])->name("admin");
-Route::get('/profil', [ProfilController::class, 'edit'])->middleware('auth');
 
+Route::get('/profil', [ProfilController::class, 'edit'])->middleware('auth');
 Route::post('/profil', [ProfilController::class, 'save'])->name('update.profil')->middleware('auth');
+
+Route::get('/edit-research', [ProfilController::class, 'edit'])->name('edit.research')->middleware('auth');
+Route::post('/edit-research', [ProfilController::class, 'saveResearch'])->name('save.research')->middleware('auth');
+Route::patch('/edit-research', [ProfilController::class, 'updateResearch'])->name('update.research')->middleware('auth');
+Route::delete('/edit-research/{id}', [ProfilController::class, 'deleteResearch'])->name('delete.research')->middleware('auth');
+
+Route::get('/edit-distinctions', [ProfilController::class, 'edit'])->name('edit.distinctions')->middleware('auth');
+Route::post('/edit-distinctions', [ProfilController::class, 'saveDistinctions'])->name('save.distinctions')->middleware('auth');
+Route::patch('/edit-distinctions', [ProfilController::class, 'updateDistinctions'])->name('update.distinctions')->middleware('auth');
+Route::delete('/edit-distinctions/{id}', [ProfilController::class, 'deleteDistinctions'])->name('delete.distinctions')->middleware('auth');
+
+Route::get('/edit-publications', [ProfilController::class, 'edit'])->name('edit.publications')->middleware('auth');
+
 
 Route::get('/professeurs', [PageController::class, 'getProfesseurs'])->name("frontend.professeurs");
 Route::get('/professeur/{id}', [PageController::class, 'getProfesseur'])->name("frontend.professeur");

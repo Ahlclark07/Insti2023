@@ -65,7 +65,7 @@ class User extends Authenticatable
 
     public function theme_de_recherche()
     {
-        return $this->hasOne(theme_de_recherches::class);
+        return $this->hasMany(theme_de_recherches::class);
     }
 
     public function grade()
