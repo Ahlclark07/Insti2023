@@ -20,6 +20,6 @@ class PageController extends Controller
     public function getProfesseur($id)
     {
         $professeur = User::where("id", $id)->get();
-        return view("professeur")->with("professeur", $professeur);
+        return view("professeur")->with("professeur", $professeur[0]);
     }
 }
